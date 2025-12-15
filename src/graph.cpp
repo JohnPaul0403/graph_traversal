@@ -1,4 +1,5 @@
 #include "../include/graph.h"
+#include <algorithm>
 #include <iostream>
 #include <queue>
 #include <random>
@@ -84,27 +85,55 @@ void Graph::shortestPath(int start, int end) {
   // all the way through the end node.
   std::queue<int> queueVertices;
   std::vector<bool> visited(V, false);
+  std::vector<int> parent(V, -1);
+  std::vector<int> path;
+  int node = end;
+  auto found = false;
   int v;
 
   queueVertices.push(start);
+  visited[start] = 0;
 
-  while (v != end && !queueVertices.empty()) {
+  while (!found && !queueVertices.empty()) {
     v = queueVertices.front();
     queueVertices.pop();
 
-    if (visited[v])
-      continue;
-
-    visited[v] = true;
-    std::cout << "Visited: " << v << " -> ";
-
     for (int i = 0; i < V; i++) {
-      if (matrix[v][i] && !visited[i])
+      if (matrix[v][i] && !visited[i]) {
+        visited[i] = true;
+        parent[i] = v;
         queueVertices.push(i);
+
+        if (i == end) {
+          found = true;
+          break;
+        }
+      }
     }
   }
 
-  std::cout << "\n";
+  if (!found) {
+    std::cout << "No path exists from " << start << " to " << end << "\n";
+    return;
+  }
+
+  // Build path from end to start
+  while (node != -1) {
+    path.push_back(node);
+    node = parent[node];
+  }
+
+  // Reverse to get start-to-end order
+  std::reverse(path.begin(), path.end());
+
+  // Print the shortest path
+  for (size_t i = 0; i < path.size(); i++) {
+    std::cout << path[i];
+    if (i != path.size() - 1)
+      std::cout << " -> ";
+  }
+
+  std::cout << " (Length: " << path.size() - 1 << " edges)\n";
 }
 
 void Graph::printMatrix() {
