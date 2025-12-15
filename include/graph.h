@@ -12,6 +12,7 @@ public:
   void addEdge(int, int);
   void createGraph();
   void dfs(int);
+  void bfs(int);
   void printMatrix();
 };
 

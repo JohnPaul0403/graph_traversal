@@ -1,7 +1,9 @@
 #include "../include/graph.h"
 #include <iostream>
+#include <queue>
 #include <random>
 #include <stack>
+#include <vector>
 
 Graph::Graph(int vertices)
     : V(vertices), matrix(vertices, std::vector<bool>(vertices, false)) {}
@@ -48,6 +50,31 @@ void Graph::dfs(int start = 0) {
     for (int i = 0; i < V; i++) {
       if (matrix[v][i] && !visited[i])
         stacked.push(i);
+    }
+  }
+}
+
+void Graph::bfs(int start = 0) {
+  std::queue<int> queueVertices;
+  std::vector<bool> visited(V, false);
+  int v;
+
+  queueVertices.push(start);
+
+  while (!queueVertices.empty()) {
+    v = queueVertices.front();
+    queueVertices.pop();
+
+    if (visited[v])
+      continue;
+
+    visited[v] = true;
+    std::cout << "Visited: " << v << "\n";
+
+    // Traversing through nodes
+    for (int i = 0; i < V; i++) {
+      if (matrix[v][i] && !visited[i])
+        queueVertices.push(i);
     }
   }
 }
