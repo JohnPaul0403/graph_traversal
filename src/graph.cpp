@@ -79,6 +79,34 @@ void Graph::bfs(int start = 0) {
   }
 }
 
+void Graph::shortestPath(int start, int end) {
+  // Re-implementation of bfs but from the start point,
+  // all the way through the end node.
+  std::queue<int> queueVertices;
+  std::vector<bool> visited(V, false);
+  int v;
+
+  queueVertices.push(start);
+
+  while (v != end && !queueVertices.empty()) {
+    v = queueVertices.front();
+    queueVertices.pop();
+
+    if (visited[v])
+      continue;
+
+    visited[v] = true;
+    std::cout << "Visited: " << v << " -> ";
+
+    for (int i = 0; i < V; i++) {
+      if (matrix[v][i] && !visited[i])
+        queueVertices.push(i);
+    }
+  }
+
+  std::cout << "\n";
+}
+
 void Graph::printMatrix() {
   std::cout << "\nAdjacency Matrix (" << V << " vertices):\n";
   std::cout << "   ";

@@ -13,6 +13,7 @@ public:
   void createGraph();
   void dfs(int);
   void bfs(int);
+  void shortestPath(int, int);
   void printMatrix();
 };
 
